@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Database Home Page</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(270deg, #8360c3, #2ebf91);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+            color: #333;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .navbar button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            padding: 40px;
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s ease;
+        }
+        .form-group input:focus {
+            box-shadow: 0 0 8px rgba(46, 191, 145, 0.5);
+            border-color: #2ebf91;
+            outline: none;
+        }
+        button {
+            background-color: #8360c3;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #6a4ca2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: fadeInUp 1s ease-in-out;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        th {
+            background-color: #2ebf91;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.02);
+        }
+        tbody tr {
+            animation: fadeInTable 0.5s ease-in-out;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInTable {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>NIPGR</h1>
+        <div>
+            <button onclick="document.getElementById('upload-file').click()">Upload Files</button>
+            <input type="file" id="upload-file" style="display:none;" accept=".csv">
+            <button onclick="openModal()">Enter Details</button>
+        </div>
+    </div>
+
+    <!-- Modal for Details Submission -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob">
+            </div>
+            <div class="form-group">
+                <label for="join-date">Date of Joining:</label>
+                <input type="date" id="join-date">
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration of Internship (months):</label>
+                <input type="number" id="duration" placeholder="Enter duration in months">
+            </div>
+            <div class="form-group">
+                <label for="papers">Number of Papers Completed:</label>
+                <input type="number" id="papers" placeholder="Enter number of papers completed">
+            </div>
+            <button onclick="submitDetails()">Submit</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="view-section">
+            <h2>Submitted Details:</h2>
+            <table id="details-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>Date of Joining</th>
+                        <th>Duration (months)</th>
+                        <th>Papers Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="5">No details available.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('detailsModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = "none";
+        }
+
+        function submitDetails() {
+            var name = document.getElementById('name').value;
+            var dob = document.getElementById('dob').value;
+            var joinDate = document.getElementById('join-date').value;
+            var duration = document.getElementById('duration').value;
+            var papers = document.getElementById('papers').value;
+
+            if (name && dob && joinDate && duration && papers) {
+                var table = document.getElementById('details-table').getElementsByTagName('tbody')[0];
+                if (table.rows[0].cells.length === 1) {
+                    table.deleteRow(0);
+                }
+                var newRow = table.insertRow();
+                newRow.insertCell(0).textContent = name;
+                newRow.insertCell(1).textContent = dob;
+                newRow.insertCell(2).textContent = joinDate;
+                newRow.insertCell(3).textContent = duration;
+                newRow.insertCell(4).textContent = papers;
+                closeModal();
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
